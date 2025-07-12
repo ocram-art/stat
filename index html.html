@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografica: Analisi del Mercato Auto Elettriche in Europa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 45vh;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .chart-container-sm {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 100%;
+            max-width: 800px;
+        }
+        .kpi-card {
+            background: linear-gradient(135deg, #007EA7, #00A8E8);
+            border-radius: 0.75rem;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .kpi-value {
+            font-size: 3rem;
+            font-weight: 900;
+        }
+        .kpi-label {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            opacity: 0.9;
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Il Mercato Auto Elettriche in Europa</h1>
+            <p class="text-lg text-gray-600">Un'analisi approfondita delle dinamiche di adozione nel 2024</p>
+        </header>
+
+        <section class="section-card" id="overview">
+            <h2 class="text-2xl font-bold mb-4 text-center">Un Panorama Eterogeneo</h2>
+            <p class="text-center mb-8 max-w-3xl mx-auto">Il mercato europeo dei veicoli elettrici non è un blocco monolitico. L'analisi dei dati di immatricolazione del 2024 rivela un'enorme disparità tra i paesi, con pochi grandi mercati che dominano i volumi e una grande variabilità nei tassi di crescita. Questa eterogeneità è il punto di partenza fondamentale per ogni analisi.</p>
+            <div class="chart-container">
+                <canvas id="countrySalesChart"></canvas>
+            </div>
+            <p class="text-sm text-center text-gray-500 mt-4">Il grafico mostra il volume assoluto delle immatricolazioni di veicoli elettrici per paese nel 2024, evidenziando la concentrazione delle vendite in nazioni come Germania, Regno Unito e Francia.</p>
+        </section>
+
+        <section class="section-card" id="failed-model">
+            <h2 class="text-2xl font-bold mb-4 text-center">La Trappola del "Modello Unico"</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <div class="text-center">
+                    <span class="text-8xl">❓</span>
+                </div>
+                <div class="flex-grow">
+                    <p class="mb-4">Un primo tentativo di modellare il mercato utilizzando una regressione lineare su tutti i 31 paesi ha prodotto risultati deludenti. Il modello è risultato statisticamente **non significativo**, con un Adjusted R-squared di appena il <strong>2.6%</strong>.</p>
+                    <p class="font-semibold">Questo significa che fattori come l'appartenenza all'UE o la presenza di incentivi, se analizzati su scala continentale, non riescono a spiegare le differenze nelle vendite.</p>
+                    <p class="mt-4 text-blue-800 font-bold">Conclusione: Un approccio "one-size-fits-all" è inefficace. Bisogna segmentare il mercato per capirlo.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card" id="clustering">
+            <h2 class="text-2xl font-bold mb-4 text-center">Segmentazione Strategica: I 4 Cluster di Mercato</h2>
+            <p class="text-center mb-8 max-w-3xl mx-auto">Utilizzando un'analisi dei cluster (K-Means) basata su volume di vendite e tasso di crescita, abbiamo identificato 4 profili di mercato distinti. Questa segmentazione offre una mappa chiara delle diverse fasi di maturità e dinamismo in cui si trovano i paesi europei.</p>
+            <div class="chart-container">
+                <canvas id="clusterBubbleChart"></canvas>
+            </div>
+            <p class="text-sm text-center text-gray-500 mt-4">Ogni bolla rappresenta un paese. L'asse X mostra il volume di vendite (dimensione del mercato), l'asse Y il tasso di crescita, e il colore indica il cluster di appartenenza.</p>
+        </section>
+
+        <section class="section-card" id="deep-dive">
+            <h2 class="text-2xl font-bold mb-4 text-center">Focus sui Pionieri: Il Cluster Scandinavo</h2>
+            <p class="text-center mb-8 max-w-3xl mx-auto">Concentrando l'analisi sul cluster dei paesi scandinavi, un gruppo omogeneo e maturo, il modello di regressione diventa improvvisamente efficace e rivela insight significativi.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="kpi-card mb-6">
+                        <div class="kpi-value">45.7%</div>
+                        <div class="kpi-label">Adjusted R-Squared</div>
+                    </div>
+                    <p class="font-semibold mb-2">Risultati Chiave:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Il modello mirato è **statisticamente significativo** e spiega quasi la metà della variabilità delle vendite.</li>
+                        <li>All'interno di questo cluster, l'appartenenza all'**Unione Europea risulta essere un fattore positivo e significativo**.</li>
+                        <li>Contrariamente alla percezione di "saturazione", i dati grezzi mostrano una **crescita costante** anno su anno.</li>
+                    </ul>
+                </div>
+                <div class="chart-container-sm">
+                    <canvas id="scandinavianTrendChart"></canvas>
+                </div>
+            </div>
+             <p class="text-sm text-center text-gray-500 mt-4">Il grafico mostra il trend di crescita continuo delle immatricolazioni nei 5 paesi scandinavi dal 2022 al 2024, confermando la vitalità di questi mercati maturi.</p>
+        </section>
+        
+        <footer class="text-center mt-12 py-6 border-t">
+            <p class="font-bold">Conclusioni Finali</p>
+            <p class="text-gray-600 max-w-4xl mx-auto mt-2">L'analisi dimostra che per comprendere il mercato EV europeo è indispensabile abbandonare una visione aggregata a favore di un approccio segmentato. Solo analizzando cluster omogenei emergono i veri driver che influenzano l'adozione dei veicoli elettrici, rivelando una realtà complessa e multi-sfaccettata.</p>
+        </footer>
+
+    </div>
+
+<script>
+    const COLORS = {
+        blue: '#00A8E8',
+        darkBlue: '#007EA7',
+        navy: '#003459',
+        orange: '#F78C6B',
+        green: '#A1C349',
+        purple: '#8E5F9F',
+        yellow: '#FFC759'
+    };
+
+    const CLUSTER_COLORS = {
+        1: 'rgba(0, 168, 232, 0.7)',  // Scandinavia (Mature)
+        2: 'rgba(0, 52, 89, 0.7)',   // Big Markets
+        3: 'rgba(247, 140, 107, 0.7)',// High Growth
+        4: 'rgba(161, 195, 73, 0.7)', // Slow/Stagnant
+    };
+
+    const rawData = [
+        { country: 'Austria', sales24: 44622, growth: -0.062, cluster: 4 },
+        { country: 'Belgium', sales24: 127703, growth: 0.360, cluster: 3 },
+        { country: 'Bulgaria', sales24: 1665, growth: -0.110, cluster: 4 },
+        { country: 'Croatia', sales24: 1793, growth: 0.090, cluster: 4 },
+        { country: 'Cyprus', sales24: 1193, growth: 0.510, cluster: 3 },
+        { country: 'Czechia', sales24: 10920, growth: 0.630, cluster: 3 },
+        { country: 'Denmark', sales24: 89199, growth: 0.420, cluster: 1 },
+        { country: 'Estonia', sales24: 1320, growth: -0.080, cluster: 4 },
+        { country: 'Finland', sales24: 21868, growth: -0.250, cluster: 1 },
+        { country: 'France', sales24: 290614, growth: -0.020, cluster: 2 },
+        { country: 'Germany', sales24: 380609, growth: -0.270, cluster: 2 },
+        { country: 'Greece', sales24: 8707, growth: 0.360, cluster: 3 },
+        { country: 'Hungary', sales24: 8565, growth: 0.470, cluster: 3 },
+        { country: 'Ireland', sales24: 17459, growth: -0.230, cluster: 4 },
+        { country: 'Italy', sales24: 65620, growth: -0.010, cluster: 4 },
+        { country: 'Latvia', sales24: 1270, growth: -0.280, cluster: 4 },
+        { country: 'Lithuania', sales24: 1779, growth: -0.150, cluster: 4 },
+        { country: 'Luxembourg', sales24: 12778, growth: 0.150, cluster: 3 },
+        { country: 'Malta', sales24: 2886, growth: 0.900, cluster: 3 },
+        { country: 'Netherlands', sales24: 132166, growth: 0.150, cluster: 3 },
+        { country: 'Poland', sales24: 16564, growth: -0.020, cluster: 4 },
+        { country: 'Portugal', sales24: 41757, growth: 0.140, cluster: 3 },
+        { country: 'Romania', sales24: 9795, growth: -0.320, cluster: 4 },
+        { country: 'Slovakia', sales24: 2227, growth: -0.050, cluster: 4 },
+        { country: 'Slovenia', sales24: 3148, growth: -0.270, cluster: 4 },
+        { country: 'Spain', sales24: 57374, growth: 0.110, cluster: 4 },
+        { country: 'Sweden', sales24: 94333, growth: -0.150, cluster: 1 },
+        { country: 'Iceland', sales24: 2661, growth: -0.690, cluster: 1 },
+        { country: 'Norway', sales24: 114396, growth: 0.090, cluster: 1 },
+        { country: 'Switzerland', sales24: 46141, growth: -0.120, cluster: 4 },
+        { country: ['United', 'Kingdom'], sales24: 381970, growth: 0.210, cluster: 2 }
+    ];
+
+    const scandinavianData = {
+        labels: ['2022', '2023', '2024'],
+        countries: [
+            { name: 'Denmark', data: [30855, 33941, 39032], color: COLORS.blue },
+            { name: 'Finland', data: [14530, 15983, 18380], color: COLORS.green },
+            { name: 'Sweden', data: [95035, 104539, 120219], color: COLORS.yellow },
+            { name: 'Iceland', data: [5566, 6123, 7041], color: COLORS.purple },
+            { name: 'Norway', data: [138287, 152116, 174933], color: COLORS.orange }
+        ]
+    };
+
+    function wrapLabel(str, maxWidth = 16) {
+        if (str.length <= maxWidth) return str;
+        const words = str.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxWidth && currentLine.length > 0) {
+                lines.push(currentLine);
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        lines.push(currentLine);
+        return lines;
+    }
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+          return label.join(' ');
+        }
+        return label;
+    };
+    
+    const commonChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: '#e5e7eb'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        }
+    };
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        const countrySalesCtx = document.getElementById('countrySalesChart').getContext('2d');
+        new Chart(countrySalesCtx, {
+            type: 'bar',
+            data: {
+                labels: rawData.map(d => Array.isArray(d.country) ? d.country : wrapLabel(d.country)),
+                datasets: [{
+                    label: 'Immatricolazioni EV 2024',
+                    data: rawData.map(d => d.sales24),
+                    backgroundColor: COLORS.darkBlue,
+                    borderColor: COLORS.navy,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    y: {
+                        grid: { display: false }
+                    },
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: '#e5e7eb' }
+                    }
+                }
+            }
+        });
+
+        const clusterBubbleCtx = document.getElementById('clusterBubbleChart').getContext('2d');
+        new Chart(clusterBubbleCtx, {
+            type: 'bubble',
+            data: {
+                datasets: [
+                    {
+                        label: 'Cluster 1: Maturi (Scandinavia)',
+                        data: rawData.filter(d => d.cluster === 1).map(d => ({ x: d.sales24, y: d.growth * 100, r: Math.sqrt(d.sales24) / 10, country: d.country })),
+                        backgroundColor: CLUSTER_COLORS[1]
+                    },
+                    {
+                        label: 'Cluster 2: Grandi Mercati',
+                        data: rawData.filter(d => d.cluster === 2).map(d => ({ x: d.sales24, y: d.growth * 100, r: Math.sqrt(d.sales24) / 10, country: d.country })),
+                        backgroundColor: CLUSTER_COLORS[2]
+                    },
+                    {
+                        label: 'Cluster 3: Alta Crescita',
+                        data: rawData.filter(d => d.cluster === 3).map(d => ({ x: d.sales24, y: d.growth * 100, r: Math.sqrt(d.sales24) / 10, country: d.country })),
+                        backgroundColor: CLUSTER_COLORS[3]
+                    },
+                    {
+                        label: 'Cluster 4: Lenti/Stagnanti',
+                        data: rawData.filter(d => d.cluster === 4).map(d => ({ x: d.sales24, y: d.growth * 100, r: Math.sqrt(d.sales24) / 10, country: d.country })),
+                        backgroundColor: CLUSTER_COLORS[4]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const d = context.raw;
+                                let countryName = Array.isArray(d.country) ? d.country.join(' ') : d.country;
+                                return `${countryName}: Vendite=${d.x}, Crescita=${d.y.toFixed(1)}%`;
+                            },
+                            title: () => null 
+                        }
+                    },
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    x: {
+                        type: 'logarithmic',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Volume Immatricolazioni 2024 (Logaritmico)'
+                        },
+                        grid: { color: '#e5e7eb' }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Crescita % (2023-2024)'
+                        },
+                        grid: { color: '#e5e7eb' }
+                    }
+                }
+            }
+        });
+
+        const scandinavianTrendCtx = document.getElementById('scandinavianTrendChart').getContext('2d');
+        new Chart(scandinavianTrendCtx, {
+            type: 'line',
+            data: {
+                labels: scandinavianData.labels,
+                datasets: scandinavianData.countries.map(c => ({
+                    label: c.name,
+                    data: c.data,
+                    borderColor: c.color,
+                    backgroundColor: c.color + '33', // a bit of transparent fill
+                    fill: false,
+                    tension: 0.1
+                }))
+            },
+            options: {
+                ...commonChartOptions,
+                 plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: (tooltipItems) => `Anno ${tooltipItems[0].label}`
+                        }
+                    }
+                },
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
